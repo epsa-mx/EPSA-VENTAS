@@ -1,4 +1,4 @@
-import 'package:flutter/services.dart' show AssetManifest;
+import 'package:flutter/services.dart' show AssetManifest, rootBundle;
 
 class AssetLevel {
   final String base;              // ej. "assets/Planos/"

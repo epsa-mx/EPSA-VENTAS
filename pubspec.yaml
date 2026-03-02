@@ -33,9 +33,35 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/branding/epsa_logo.svg
-    - assets/branding/docs_icon.svg
-    - assets/pdfs/
+    - assets/branding/
+    # Datasheets
+    - assets/pdfs/Datasheets/CHO/
+    - assets/pdfs/Datasheets/CVT/
+    - assets/pdfs/Datasheets/CYA/
+    - assets/pdfs/Datasheets/DCL/
+    - assets/pdfs/Datasheets/LCP/
+    - assets/pdfs/Datasheets/MPE/
+    - assets/pdfs/Datasheets/NBE/
+    - assets/pdfs/Datasheets/NED/
+    - assets/pdfs/Datasheets/PII/
+    - assets/pdfs/Datasheets/RLW/
+    - assets/pdfs/Datasheets/TWI/
+    - assets/pdfs/Datasheets/VAC/
+    - assets/pdfs/Datasheets/WMS/
+    # Planos
+    - assets/pdfs/Planos/CHO/
+    - assets/pdfs/Planos/CVT/
+    - assets/pdfs/Planos/CYA/
+    - assets/pdfs/Planos/DCL/
+    - assets/pdfs/Planos/LCP/
+    - assets/pdfs/Planos/MPE/
+    - assets/pdfs/Planos/NBE/
+    - assets/pdfs/Planos/NED/
+    - assets/pdfs/Planos/PII/
+    - assets/pdfs/Planos/RLW/
+    - assets/pdfs/Planos/TWI/
+    - assets/pdfs/Planos/VAC/
+    - assets/pdfs/Planos/WMS/
 
 flutter_launcher_icons:
   android: true

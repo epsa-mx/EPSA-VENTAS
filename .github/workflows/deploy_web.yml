@@ -5,6 +5,10 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
 
+# Agregamos permisos para que la acción pueda escribir en el repositorio
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest

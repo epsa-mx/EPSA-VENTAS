@@ -55,77 +55,111 @@ class _AuthGateState extends State<AuthGate> {
 
     if (_loading) {
       return Scaffold(
+        backgroundColor: cs.surface,
         body: Center(child: CircularProgressIndicator(color: cs.primary)),
       );
     }
 
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [cs.surface, cs.background],
+      backgroundColor: cs.surface,
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 400),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // 👇 Logo movido fuera de la caja
+                SvgPicture.asset(
+                  'assets/branding/epsa_logo.svg',
+                  height: 240,
+                  fit: BoxFit.contain,
+                ),
+                
+                const SizedBox(height: 40),
+
+                // Caja principal (ahora contiene el botón y errores)
+                Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: cs.primary,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: kElevationToShadow[4],
+                  ),
+                  child: Column(
+                    children: [
+                      if (_error != null) ...[
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(12),
+                          margin: const EdgeInsets.only(bottom: 16),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.9),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            _error!,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: cs.error, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+
+                      // Botón de Google con texto de acceso integrado
+                      InkWell(
+                        onTap: _loginGoogle,
+                        borderRadius: BorderRadius.circular(12),
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                          decoration: BoxDecoration(
+                            color: cs.primary,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: kElevationToShadow[0],
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SvgPicture.network(
+                                    'https://www.gstatic.com/lamda/images/google_signin_buttons/google_icon.svg',
+                                    height: 24,
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    'INGRESAR CON GOOGLE',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 0.5,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 4),
+                              const Text(
+                                'Acceso exclusivo para personal de comercial',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              'assets/branding/epsa_logo.svg',
-              height: 200,
-              fit: BoxFit.contain,
-            ),
-            const SizedBox(height: 40),
-            
-            Text(
-              'Ventas EPSA',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: cs.secondary,
-              ),
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              'Acceso exclusivo para personal autorizado',
-              style: TextStyle(color: Colors.grey),
-            ),
-            
-            const SizedBox(height: 50),
-
-            if (_error != null) ...[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: Text(
-                  _error!,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: cs.error, fontWeight: FontWeight.w600),
-                ),
-              ),
-              const SizedBox(height: 20),
-            ],
-
-            SizedBox(
-              width: 280,
-              height: 50,
-              child: OutlinedButton.icon(
-                onPressed: _loginGoogle,
-                icon: SvgPicture.network(
-                  'https://www.gstatic.com/lamda/images/google_signin_buttons/google_icon.svg',
-                  height: 24,
-                ),
-                label: const Text(
-                  'Iniciar sesión con Google',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: cs.primary, width: 1.5),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                ),
-              ),
-            ),
-          ],
         ),
       ),
     );

@@ -49,19 +49,38 @@ flutter:
     - assets/pdfs/Datasheets/VAC/
     - assets/pdfs/Datasheets/WMS/
     # Planos
-    - assets/pdfs/Planos/CHO/
+    - assets/pdfs/Planos/CHO/Bag Handling Systems/
+    - assets/pdfs/Planos/CHO/Open Mouth Bag Fillers/
+    - assets/pdfs/Planos/CHO/Bulk Bag Filling Systems/
+    - assets/pdfs/Planos/CHO/Bulk Bag Unloading Systems/
     - assets/pdfs/Planos/CVT/
     - assets/pdfs/Planos/CYA/
     - assets/pdfs/Planos/DCL/
     - assets/pdfs/Planos/LCP/
-    - assets/pdfs/Planos/MPE/
+    - assets/pdfs/Planos/MPE/Molinos/
+    - assets/pdfs/Planos/MPE/Chain Vey/
     - assets/pdfs/Planos/NBE/
-    - assets/pdfs/Planos/NED/
     - assets/pdfs/Planos/PII/
-    - assets/pdfs/Planos/RLW/
-    - assets/pdfs/Planos/TWI/
+    - assets/pdfs/Planos/PII/CLM/
+    - assets/pdfs/Planos/PII/G Mill/
+    - assets/pdfs/Planos/PII/Sifter/
+    - assets/pdfs/Planos/PII/Mega Mill/
+    - assets/pdfs/Planos/PII/Roto-Mill/
+    - assets/pdfs/Planos/PII/Fine Grinder/
+    - assets/pdfs/Planos/PII/Rotary Valve/
+    - assets/pdfs/Planos/RLW/Floorscales/
+    - assets/pdfs/Planos/RLW/Indicadores/
+    - assets/pdfs/Planos/RLW/Bascula de ejes/
+    - assets/pdfs/Planos/RLW/Celdas de carga/
+    - assets/pdfs/Planos/RLW/Bascula de Camiones/
+    - assets/pdfs/Planos/RLW/Bascula Ferrocarrilera/
+    - assets/pdfs/Planos/TWI/Dosificadores/
+    - assets/pdfs/Planos/TWI/Pesaje en banda/
+    - assets/pdfs/Planos/TWI/Dosificadores de banda/
     - assets/pdfs/Planos/VAC/
-    - assets/pdfs/Planos/WMS/
+    - assets/pdfs/Planos/WMS/HDX/
+    - assets/pdfs/Planos/WMS/UDV/
+    - assets/pdfs/Planos/WMS/KWIK KLEAN/
 
 flutter_launcher_icons:
   android: true

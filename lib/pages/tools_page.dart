@@ -3,6 +3,6 @@ class ToolsPage extends StatelessWidget {
   const ToolsPage({super.key});
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('Herramientas'));
+    return const Center(child: Text('Proximamente'));
   }
 }

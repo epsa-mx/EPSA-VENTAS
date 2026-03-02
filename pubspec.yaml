@@ -22,6 +22,7 @@ dependencies:
   url_launcher: ^6.3.2
   web: ^1.1.1
   shared_preferences: ^2.3.2
+  http: ^1.2.2
 
 dev_dependencies:
   flutter_test:
@@ -34,33 +35,14 @@ flutter:
   assets:
     - assets/branding/epsa_logo.svg
     - assets/branding/docs_icon.svg
-    - assets/pdfs/DataSheets/CVT/
-    - assets/pdfs/DataSheets/TWI/
-    - assets/pdfs/DataSheets/NBE/
-    - assets/pdfs/DataSheets/LCP/
-    - assets/pdfs/DataSheets/CHO/
-    - assets/pdfs/DataSheets/CYA/
-    - assets/pdfs/DataSheets/RLW/
-    - assets/pdfs/DataSheets/MPE/
-    - assets/pdfs/DataSheets/DCL/
-    - assets/pdfs/DataSheets/PII/
-    - assets/pdfs/Planos/CVT/
-    - assets/pdfs/Planos/TWI/
-    - assets/pdfs/Planos/NBE/
-    - assets/pdfs/Planos/LCP/
-    - assets/pdfs/Planos/CHO/
-    - assets/pdfs/Planos/CYA/
-    - assets/pdfs/Planos/RLW/
-    - assets/pdfs/Planos/MPE/
-    - assets/pdfs/Planos/DCL/
-    - assets/pdfs/Planos/PII/
+    - assets/pdfs/
 
 
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: assets/branding/icon_512.png
+  image_path: assets/branding/favicon.png
 
 flutter_native_splash:
   color: "#ffffff"
-  image: assets/branding/icon_512.png
+  image: assets/branding/favicon.png

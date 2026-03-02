@@ -12,7 +12,7 @@ class AuthService {
 
   // Cambia este PIN si lo deseas; en producción, usa variables de entorno o remoto.
   // Si quieres usar HASH, guarda aquí el SHA256 del PIN real.
-  static const String _pinPlano = '1234';            // ⚠️ PIN plano (simple)
+  static const String _pinPlano = '5728';            // ⚠️ PIN plano (simple)
   // static final String _pinHash = sha256.convert(utf8.encode('1234')).toString(); // Alternativa: hash
 
   Future<bool> isLoggedIn() async {

@@ -4,6 +4,7 @@ import 'package:epsa_ventas/pages/tools_page.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'auth/auth_gate.dart';
 import 'auth/auth_service.dart';
+import 'package:epsa_ventas/core/update_watcher.dart';
 
 void main() => runApp(const EpsaApp());
 
@@ -76,8 +77,12 @@ class EpsaApp extends StatelessWidget {
       title: 'EPSA Ventas',
       theme: light,
       darkTheme: dark,
-      home: const AuthGate(),
       debugShowCheckedModeBanner: false,
+      home: UpdateWatcher(
+        // puedes subir el intervalo a 5 minutos si prefieres
+        interval: const Duration(minutes: 2),
+        child: const Shell(),
+      ),
     );
   }
 }

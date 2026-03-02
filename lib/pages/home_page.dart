@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:epsa_ventas/pages/datasheets/sections_page.dart';
-import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import 'package:epsa_ventas/pages/plans/sections_page.dart'; // 👈 nuevo
+import 'package:epsa_ventas/pages/common/asset_browser_page.dart';
+
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -40,9 +39,12 @@ class HomePage extends StatelessWidget {
               })),
               const SizedBox(width: 12),
               Expanded(child: tile('DATA SHEETS', () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const DataSheetSectionsPage()),
-                );
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const AssetBrowserPage(
+                    title: 'Data Sheets',
+                    basePrefix: 'assets/pdfs/Datasheets/',
+                  ),
+                ));
               })),
             ],
           ),
@@ -54,15 +56,18 @@ class HomePage extends StatelessWidget {
               })),
               const SizedBox(width: 12),
               Expanded(child: tile('REPORTE DE\nPENDIENTES', () {
-                launchUrlString('https://docs.google.com/spreadsheets/d/1kLkJxReWrApVfLeV-jMmC_cX8zvhD3xRB4WgnNOqv3I/edit?gid=753004487');
+                launchUrlString('https://docs.google.com/spreadsheets/d/1Y_X89_2wGli1pJpA7FsuCExsTdJjHeT_m1pUas_uw2Q/edit?resourcekey=&gid=1726008976#gid=1726008976');
               })),
             ],
           ),
           const SizedBox(height: 12),
-          tile('PLANOS', () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const PlansSectionsPage()),
-            );
+          tile('PLANOS E INFORMACION TECNICA', () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (_) => const AssetBrowserPage(
+                title: 'Planos',
+                basePrefix: 'assets/pdfs/Planos/',
+              ),
+            ));
           }, h: 140),
         ],
       ),

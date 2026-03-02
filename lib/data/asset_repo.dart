@@ -1,5 +1,4 @@
-import 'dart:convert';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart' show AssetManifest;
 
 class AssetLevel {
   final String base;              // ej. "assets/Planos/"
@@ -11,13 +10,13 @@ class AssetLevel {
 
 class AssetRepo {
   /// Carga los "hijos inmediatos" (carpetas/archivos) dentro de [base]+[subpath]
-  /// leyendo AssetManifest.json. Soporta niveles anidados arbitrarios.
+  /// usando la API AssetManifest de Flutter.
   static Future<AssetLevel> loadLevel({
     required String base,     // p.ej. 'assets/Planos/' o 'assets/pdfs/DataSheets/'
     String subpath = '',      // p.ej. 'CVT/' o 'CVT/Antiguos/'
   }) async {
-    final raw = await rootBundle.loadString('AssetManifest.json');
-    final Map<String, dynamic> manifest = json.decode(raw);
+    // Nueva forma oficial de cargar el manifiesto en Flutter 3.22+
+    final AssetManifest manifest = await AssetManifest.loadFromAssetBundle(rootBundle);
 
     String norm(String s) {
       var r = s.replaceAll('\\', '/');
@@ -28,15 +27,16 @@ class AssetRepo {
     final baseDir = norm(base);
     final current = norm('$baseDir$subpath');
 
-    final keys = manifest.keys.where((k) => k.startsWith(current)).toList();
+    // Obtenemos todos los assets que empiezan con nuestra ruta actual
+    final keys = manifest.listAssets().where((k) => k.startsWith(current)).toList();
 
     final folders = <String>{};
     final files = <String>[];
 
     for (final full in keys) {
       // ej. full = "assets/Planos/CVT/INTERCEPTOR_FV_5IN.pdf"
-      var rel = full.substring(current.length); // "INTERCEPTOR_FV_5IN.pdf" o "CVT/..."
-      if (rel.isEmpty) continue;                // carpeta exacta
+      var rel = full.substring(current.length); 
+      if (rel.isEmpty) continue;                
       final slash = rel.indexOf('/');
 
       if (slash >= 0) {
@@ -50,9 +50,9 @@ class AssetRepo {
     }
 
     final sortedFolders = folders.toList()..sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
-    files.sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
+    final sortedFiles = files..sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
 
-    return AssetLevel(base: baseDir, subpath: subpath, folders: sortedFolders, files: files);
+    return AssetLevel(base: baseDir, subpath: subpath, folders: sortedFolders, files: sortedFiles);
   }
 
   /// Helper para componer rutas

@@ -36,7 +36,6 @@ flutter:
     - assets/branding/epsa_logo.svg
     - assets/branding/docs_icon.svg
     - assets/pdfs/
-    - assets/pdfs/CHO
 
 flutter_launcher_icons:
   android: true

@@ -1,55 +1,58 @@
-// lib/auth/auth_service.dart
-import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'whitelist.dart';
 
 class AuthService {
   AuthService._();
   static final instance = AuthService._();
 
-  static const _keyAuthed = 'epsa_authed_email';
-  static const _keyWhen   = 'epsa_authed_at';
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  // Cambia este PIN si lo deseas; en producción, usa variables de entorno o remoto.
-  // Si quieres usar HASH, guarda aquí el SHA256 del PIN real.
-  static const String _pinPlano = '5728';            // ⚠️ PIN plano (simple)
-  // static final String _pinHash = sha256.convert(utf8.encode('1234')).toString(); // Alternativa: hash
-
+  /// Verifica si el usuario ya está autenticado en Firebase
   Future<bool> isLoggedIn() async {
-    final sp = await SharedPreferences.getInstance();
-    return sp.getString(_keyAuthed) != null;
+    return _auth.currentUser != null;
   }
 
+  /// Cierra sesión en Firebase y Google
   Future<void> logout() async {
-    final sp = await SharedPreferences.getInstance();
-    await sp.remove(_keyAuthed);
-    await sp.remove(_keyWhen);
+    await _googleSignIn.signOut();
+    await _auth.signOut();
   }
 
-  /// Autentica: email en whitelist + PIN correcto
-  Future<String?> loginWithEmailAndPin(String email, String pin) async {
-    final normalized = email.trim().toLowerCase();
-    if (!Whitelist.emails.contains(normalized)) {
-      return 'Este correo no está autorizado (whitelist).';
+  /// Inicia sesión con Google y valida contra la Whitelist
+  Future<String?> signInWithGoogle() async {
+    try {
+      // 1. Iniciar el flujo de Google
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) return 'Inicio de sesión cancelado.';
+
+      // 2. Validar contra la Whitelist antes de completar en Firebase
+      final email = googleUser.email.toLowerCase();
+      if (!Whitelist.emails.contains(email)) {
+        await _googleSignIn.disconnect();
+        return 'El correo $email no está autorizado.';
+      }
+
+      // 3. Obtener credenciales para Firebase
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // 4. Autenticar en Firebase
+      await _auth.signInWithCredential(credential);
+      
+      return null; // Éxito
+    } on FirebaseAuthException catch (e) {
+      return e.message ?? 'Error de autenticación.';
+    } catch (e) {
+      return 'Error inesperado: $e';
     }
-
-    // Validación de PIN simple
-    if (pin != _pinPlano) {
-      return 'PIN incorrecto.';
-    }
-
-    // Si usas hash:
-    // final pinHash = sha256.convert(utf8.encode(pin)).toString();
-    // if (pinHash != _pinHash) return 'PIN incorrecto.';
-
-    final sp = await SharedPreferences.getInstance();
-    await sp.setString(_keyAuthed, normalized);
-    await sp.setInt(_keyWhen, DateTime.now().millisecondsSinceEpoch);
-    return null; // null = OK
   }
 
   Future<String?> currentUserEmail() async {
-    final sp = await SharedPreferences.getInstance();
-    return sp.getString(_keyAuthed);
+    return _auth.currentUser?.email;
   }
 }

@@ -1,8 +1,7 @@
-// lib/auth/auth_gate.dart
 import 'package:flutter/material.dart';
 import 'auth_service.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../main.dart'; // para navegar a Shell
+import '../main.dart'; 
 
 class AuthGate extends StatefulWidget {
   const AuthGate({super.key});
@@ -12,11 +11,7 @@ class AuthGate extends StatefulWidget {
 }
 
 class _AuthGateState extends State<AuthGate> {
-  final _formKey = GlobalKey<FormState>();
-  final _emailCtrl = TextEditingController();
-  final _pinCtrl = TextEditingController();
   bool _loading = true;
-  bool _obscure = true;
   String? _error;
 
   @override
@@ -41,14 +36,10 @@ class _AuthGateState extends State<AuthGate> {
     );
   }
 
-  Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;
+  Future<void> _loginGoogle() async {
     setState(() { _error = null; _loading = true; });
 
-    final msg = await AuthService.instance.loginWithEmailAndPin(
-      _emailCtrl.text,
-      _pinCtrl.text,
-    );
+    final msg = await AuthService.instance.signInWithGoogle();
 
     if (!mounted) return;
     if (msg != null) {
@@ -69,109 +60,74 @@ class _AuthGateState extends State<AuthGate> {
     }
 
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // 👇 Logo EPSA fuera de la caja
-              SvgPicture.asset(
-                'assets/branding/epsa_logo.svg',
-                height: 250,
-                fit: BoxFit.contain,
+      body: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [cs.surface, cs.background],
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              'assets/branding/epsa_logo.svg',
+              height: 200,
+              fit: BoxFit.contain,
+            ),
+            const SizedBox(height: 40),
+            
+            Text(
+              'Ventas EPSA',
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: cs.secondary,
               ),
-              const SizedBox(height: 0),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'Acceso exclusivo para personal autorizado',
+              style: TextStyle(color: Colors.grey),
+            ),
+            
+            const SizedBox(height: 50),
 
-              // 👇 Caja con el formulario
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 420),
-                child: Card(
-                  color: cs.primary,
-                  margin: const EdgeInsets.all(8),
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Acceso EPSA',
-                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.onPrimary,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 20),
-
-                          // Campo de correo
-                          TextFormField(
-                            controller: _emailCtrl,
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: const InputDecoration(
-                              labelText: 'Correo',
-                              prefixIcon: Icon(Icons.mail_outline),
-                            ),
-                            validator: (v) {
-                              if (v == null || v.trim().isEmpty) return 'Ingresa tu correo';
-                              final ok = RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(v.trim());
-                              if (!ok) return 'Correo inválido';
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 12),
-
-                          // Campo PIN
-                          TextFormField(
-                            controller: _pinCtrl,
-                            obscureText: _obscure,
-                            decoration: InputDecoration(
-                              labelText: 'PIN',
-                              prefixIcon: const Icon(Icons.password_outlined),
-                              suffixIcon: IconButton(
-                                icon: Icon(_obscure ? Icons.visibility : Icons.visibility_off),
-                                onPressed: () => setState(() => _obscure = !_obscure),
-                              ),
-                            ),
-                            validator: (v) {
-                              if (v == null || v.isEmpty) return 'Ingresa el PIN';
-                              if (v.length < 4) return 'PIN mínimo de 4 dígitos';
-                              return null;
-                            },
-                          ),
-
-                          if (_error != null) ...[
-                            const SizedBox(height: 12),
-                            Text(_error!, style: TextStyle(color: Theme.of(context).colorScheme.error)),
-                          ],
-                          const SizedBox(height: 20),
-
-                          // Botón
-                          SizedBox(
-                            width: double.infinity,
-                            child: FilledButton.icon(
-                              onPressed: _submit,
-                              icon: const Icon(Icons.lock_open),
-                              label: const Text('Ingresar'),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+            if (_error != null) ...[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Text(
+                  _error!,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: cs.error, fontWeight: FontWeight.w600),
                 ),
               ),
+              const SizedBox(height: 20),
             ],
-          ),
+
+            SizedBox(
+              width: 280,
+              height: 50,
+              child: OutlinedButton.icon(
+                onPressed: _loginGoogle,
+                icon: SvgPicture.network(
+                  'https://www.gstatic.com/lamda/images/google_signin_buttons/google_icon.svg',
+                  height: 24,
+                ),
+                label: const Text(
+                  'Iniciar sesión con Google',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(color: cs.primary, width: 1.5),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
-
   }
 }

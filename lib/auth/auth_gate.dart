@@ -70,16 +70,12 @@ class _AuthGateState extends State<AuthGate> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // 👇 Logo movido fuera de la caja
-                SvgPicture.asset(
-                  'assets/branding/epsa_logo.svg',
-                  height: 240,
-                  fit: BoxFit.contain,
-                ),
+                // 👇 Usamos el widget EpsaLogo sin filtro global para mantener los 2 colores
+                const EpsaLogo(height: 260),
                 
-                const SizedBox(height: 40),
+                const SizedBox(height: 10),
 
-                // Caja principal (ahora contiene el botón y errores)
+                // Caja principal
                 Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
@@ -106,7 +102,7 @@ class _AuthGateState extends State<AuthGate> {
                         ),
                       ],
 
-                      // Botón de Google con texto de acceso integrado
+                      // Botón de Google
                       InkWell(
                         onTap: _loginGoogle,
                         borderRadius: BorderRadius.circular(12),
@@ -130,11 +126,11 @@ class _AuthGateState extends State<AuthGate> {
                                   ),
                                   const SizedBox(width: 12),
                                   Text(
-                                    'INGRESAR CON GOOGLE',
+                                    'INICIAR SESION',
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 20,
                                       fontWeight: FontWeight.bold,
+                                      fontSize: 24,
                                       letterSpacing: 0.5,
                                     ),
                                   ),
@@ -146,7 +142,7 @@ class _AuthGateState extends State<AuthGate> {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 14,
+                                  fontSize: 15,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),

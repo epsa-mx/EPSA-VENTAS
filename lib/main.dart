@@ -43,7 +43,7 @@ class EpsaApp extends StatelessWidget {
       navigationBarTheme: const NavigationBarThemeData(
         backgroundColor: Color(0xFF173C5B),
         indicatorColor: Color(0xFFB31017),
-        labelTextStyle: MaterialStatePropertyAll(
+        labelTextStyle: WidgetStatePropertyAll(
           TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
         ),
       ),
@@ -71,7 +71,7 @@ class EpsaApp extends StatelessWidget {
       navigationBarTheme: const NavigationBarThemeData(
         backgroundColor: Color(0xFF173C5B),
         indicatorColor: Color(0xFFB31017),
-        labelTextStyle: MaterialStatePropertyAll(
+        labelTextStyle: WidgetStatePropertyAll(
           TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
         ),
       ),
@@ -83,6 +83,34 @@ class EpsaApp extends StatelessWidget {
       darkTheme: dark,
       debugShowCheckedModeBanner: false,
       home: const AuthGate(),
+    );
+  }
+}
+
+class EpsaLogo extends StatelessWidget {
+  final double height;
+  const EpsaLogo({super.key, this.height = 150});
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    // Ruta del logo
+    final String assetName = isDark 
+        ? 'assets/branding/epsa_logo_dark.svg' 
+        : 'assets/branding/epsa_logo.svg';
+
+    return SvgPicture.asset(
+      assetName,
+      height: height,
+      fit: BoxFit.contain,
+      key: ValueKey(isDark), // Forzar reconstrucción al cambiar tema
+      // Si el logo oscuro falla, mostramos el claro como respaldo
+      placeholderBuilder: (context) => SvgPicture.asset(
+        'assets/branding/epsa_logo.svg',
+        height: height,
+        fit: BoxFit.contain,
+      ),
     );
   }
 }
@@ -103,11 +131,7 @@ class _ShellState extends State<Shell> {
       interval: const Duration(minutes: 5),
       child: Scaffold(
         appBar: AppBar(
-          title: SvgPicture.asset(
-            'assets/branding/epsa_logo.svg',
-            height: 150,
-            fit: BoxFit.contain,
-          ),
+          title: const EpsaLogo(height: 150),
           centerTitle: true,
           elevation: 0,
           actions: [
@@ -140,4 +164,10 @@ class _ShellState extends State<Shell> {
       ),
     );
   }
+}
+
+extension CustomColorScheme on ColorScheme {
+  Color get logoprimario => brightness == Brightness.light 
+      ? const Color(0xFFB31017) 
+      : const Color(0xFF014365);
 }

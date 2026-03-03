@@ -16,7 +16,7 @@ class Whitelist {
     'miguel.perez@epsa.mx',
     'cesar.ordonez@epsa.mx',
     'fernando.arroyo@epsa.mx',
-    'adonis.murillo@epsa.mx',
+    'kamen_raiderjohe@live.com.mx',
 
     // agrega los que necesites...
   };

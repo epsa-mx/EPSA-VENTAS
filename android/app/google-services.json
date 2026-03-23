@@ -12,7 +12,20 @@
           "package_name": "com.epsa.epsa_ventas"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1095833155440-f6c5p2s0o1rra09uqbvop4le3d7o93k2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.epsa.epsa_ventas",
+            "certificate_hash": "3f4f2a24e34e2d97e4a5b926f566c1941dbbc1dd"
+          }
+        },
+        {
+          "client_id": "1095833155440-mj1bgv31uh06hg6ljt4jgajokjoio5cq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC1dZp611Vq4YCVqum7ILwyktoLvyUZ8bk"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1095833155440-ar51j8dm3i7m9103ji6gvkle235cpqbu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1095833155440-2lih7umh0b0um84946ho5sofqelrope1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.epsa.epsaVentas"
+              }
+            }
+          ]
         }
       }
     }

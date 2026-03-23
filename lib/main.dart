@@ -31,7 +31,7 @@ class EpsaApp extends StatelessWidget {
         background: Color(0xFFF4F4F4),
         onPrimary: Colors.white,
         onSecondary: Colors.white,
-        onSurface: Colors.black,
+        onSurface: Colors.grey,
         onBackground: Colors.black,
       ),
       appBarTheme: const AppBarTheme(
@@ -59,7 +59,7 @@ class EpsaApp extends StatelessWidget {
         background: Color(0xFF121212),
         onPrimary: Colors.white,
         onSecondary: Colors.white,
-        onSurface: Colors.white,
+        onSurface: Colors.black,
         onBackground: Colors.white,
       ),
       appBarTheme: const AppBarTheme(

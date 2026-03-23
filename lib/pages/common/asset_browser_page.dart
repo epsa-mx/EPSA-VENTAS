@@ -14,12 +14,14 @@ class AssetBrowserPage extends StatefulWidget {
   final String title;       // Título de la pantalla (p.ej. "Planos" o "Data Sheets")
   final String basePrefix;  // Prefijo raíz (p.ej. 'assets/Planos/' o 'assets/pdfs/DataSheets/')
   final String subpath;     // Subcarpeta actual (inicia en '')
+  final bool isAdmin;       // Indica si estamos en modo administrador
 
   const AssetBrowserPage({
     super.key,
     required this.title,
     required this.basePrefix,
     this.subpath = '',
+    this.isAdmin = false,
   });
 
   @override
@@ -53,8 +55,35 @@ class _AssetBrowserPageState extends State<AssetBrowserPage> {
         title: widget.title,
         basePrefix: widget.basePrefix,
         subpath: next,
+        isAdmin: widget.isAdmin, // Pasamos el estado de admin al navegar
       ),
     ));
+  }
+
+  void _showAddOptions() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Wrap(
+        children: [
+          ListTile(
+            leading: const Icon(Icons.create_new_folder),
+            title: const Text('Crear Carpeta'),
+            onTap: () {
+              Navigator.pop(context);
+              // Lógica para crear carpeta en Firebase Storage próximamente
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.upload_file),
+            title: const Text('Subir Archivo'),
+            onTap: () {
+              Navigator.pop(context);
+              // Lógica para subir archivo a Firebase Storage próximamente
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   List<Widget> _buildBreadcrumb() {
@@ -62,9 +91,12 @@ class _AssetBrowserPageState extends State<AssetBrowserPage> {
     final crumbs = <Widget>[
       InkWell(
         onTap: () {
-          // volver a raíz
           Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (_) => AssetBrowserPage(title: widget.title, basePrefix: widget.basePrefix),
+            builder: (_) => AssetBrowserPage(
+              title: widget.title, 
+              basePrefix: widget.basePrefix,
+              isAdmin: widget.isAdmin,
+            ),
           ));
         },
         child: Text(widget.title, style: TextStyle(color: cs.onPrimary, fontWeight: FontWeight.w600)),
@@ -77,7 +109,7 @@ class _AssetBrowserPageState extends State<AssetBrowserPage> {
       for (int i = 0; i < parts.length; i++) {
         acc += '${parts[i]}/';
         crumbs.add(const Text(' / '));
-        final untilHere = acc; // capture
+        final untilHere = acc;
         crumbs.add(
           InkWell(
             onTap: () {
@@ -86,6 +118,7 @@ class _AssetBrowserPageState extends State<AssetBrowserPage> {
                   title: widget.title,
                   basePrefix: widget.basePrefix,
                   subpath: untilHere,
+                  isAdmin: widget.isAdmin,
                 ),
               ));
             },
@@ -133,6 +166,13 @@ class _AssetBrowserPageState extends State<AssetBrowserPage> {
           );
         },
       ),
+      // 👇 Botón de añadir solo visible si isAdmin es true
+      floatingActionButton: widget.isAdmin 
+          ? FloatingActionButton(
+              onPressed: _showAddOptions,
+              child: const Icon(Icons.add),
+            ) 
+          : null,
     );
   }
 }
